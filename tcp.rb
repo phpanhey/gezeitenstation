@@ -1,6 +1,7 @@
 require 'socket'
 require 'net/http'
 require 'json'
+require 'open-uri'
 
 url_vegesack = 'http://pegelonline.wsv.de/webservices/rest-api/v2/stations/VEGESACK.json?includeTimeseries=true&includeCurrentMeasurement=true'
 url_brake = 'http://pegelonline.wsv.de/webservices/rest-api/v2/stations/BRAKE.json?includeTimeseries=true&includeCurrentMeasurement=true'
@@ -105,7 +106,7 @@ end
 
 def getWaterLevel(api_url)
   begin
-    data_hash = JSON.parse(Net::HTTP.get(URI(api_url)))
+    data_hash = JSON.parse(open(api_url, &:read))
     value = (data_hash['timeseries'][0]['currentMeasurement']['value'] - 500) / 100
     trend = data_hash['timeseries'][0]['currentMeasurement']['trend']
     if trend == -1
@@ -126,43 +127,42 @@ def log(brake_val, bhv_alter_leuchtturm_val, hb_grosse_weserbruecke_val, vegesac
   File.open('displaydata.log', 'a') { |file| file.puts(timestamp + ' : ' + brake_val + ' / ' + bhv_alter_leuchtturm_val + ' / ' + hb_grosse_weserbruecke_val + ' / ' + vegesack_val) }
 end
 
+# begin
+#   resetDisplay(ip_display_brake)
+#   sleep(4)
+#   brake_val = getWaterLevel(url_brake)
+#   writeText(brake_val,ip_display_brake)
+#   sleep(4)
+# rescue
+# ensure
+# end
 
-begin
-  resetDisplay(ip_display_brake)
-  sleep(4)
-  brake_val = getWaterLevel(url_brake)
-  writeText(brake_val,ip_display_brake)
-  sleep(4)
-rescue
-ensure
-end
 
+# begin
+#   resetDisplay(ip_display_bhv_alter_leuchtturm)
+#   sleep(4)
+#   bhv_alter_leuchtturm_val = getWaterLevel(url_bhv_alter_leuchtturm)
+#   writeText(bhv_alter_leuchtturm_val,ip_display_bhv_alter_leuchtturm)
+#   sleep(4)
+# rescue
+# ensure
+# end
 
-begin
-  resetDisplay(ip_display_bhv_alter_leuchtturm)
-  sleep(4)
-  bhv_alter_leuchtturm_val = getWaterLevel(url_bhv_alter_leuchtturm)
-  writeText(bhv_alter_leuchtturm_val,ip_display_bhv_alter_leuchtturm)
-  sleep(4)
-rescue
-ensure
-end
+# begin
+#   resetDisplay(ip_display_hb_grosse_weserbruecke)
+#   sleep(4)
+#   hb_grosse_weserbruecke_val = getWaterLevel(url_hb_grosse_weserbruecke)
+#   writeText(hb_grosse_weserbruecke_val,ip_display_hb_grosse_weserbruecke)
+#   sleep(4)
+# rescue
+# ensure
+# end
 
-begin
-  resetDisplay(ip_display_hb_grosse_weserbruecke)
-  sleep(4)
-  hb_grosse_weserbruecke_val = getWaterLevel(url_hb_grosse_weserbruecke)
-  writeText(hb_grosse_weserbruecke_val,ip_display_hb_grosse_weserbruecke)
-  sleep(4)
-rescue
-ensure
-end
-
-begin
-  resetDisplay(ip_display_vegesack)
-  sleep(4)
-  vegesack_val = getWaterLevel(url_vegesack)
-  writeText(vegesack_val,ip_display_vegesack)
-rescue
-ensure
-end
+# begin
+#   resetDisplay(ip_display_vegesack)
+#   sleep(4)
+#   vegesack_val = getWaterLevel(url_vegesack)
+#   writeText(vegesack_val,ip_display_vegesack)
+# rescue
+# ensure
+# end
