@@ -158,11 +158,11 @@ rescue
 ensure
 end
 
-begin
-  resetDisplay(ip_display_vegesack)
-  sleep(4)
-  vegesack_val = getWaterLevel(url_vegesack)
-  writeText(vegesack_val,ip_display_vegesack)
-rescue
-ensure
+# begin
+#   resetDisplay(ip_display_vegesack)
+#   sleep(4)
+#   vegesack_val = getWaterLevel(url_vegesack)
+#   writeText(vegesack_val,ip_display_vegesack)
+# rescue
+# ensure
 end
